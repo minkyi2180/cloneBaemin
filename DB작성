@@ -1,5 +1,5 @@
- 블로그 따라 작성한 것 
- ## 출처(https://sumin2.tistory.com/18?category=900942)
+ # 블로그 따라 작성한 것 
+ # 출처(https://sumin2.tistory.com/18?category=900942)
  
  -- 유저
  CREATE TABLE BM_USER (
