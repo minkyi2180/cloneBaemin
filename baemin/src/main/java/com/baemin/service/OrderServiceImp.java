@@ -10,17 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baemin.dao.OrderDAO;
+import com.baemin.dao.AdminDAO;
 import com.baemin.dto.Cart;
 import com.baemin.dto.CartList;
 import com.baemin.dto.OrderDetail;
 import com.baemin.dto.OrderInfo;
 import com.baemin.login.LoginService;
+import com.baemin.util.UserInfoSessionUpdate;
 import com.google.gson.Gson;
 
 @Service
 public class OrderServiceImp implements OrderService {
 	@Autowired
 	private OrderDAO orderDAO;
+	
+	@Autowired
+	private AdminDAO adminDAO;
 
 	@Transactional
 	@Override
@@ -75,9 +80,30 @@ public class OrderServiceImp implements OrderService {
 		orderDAO.order(info);
 		orderDAO.orderDetail(detail, userId);
 		
+		//회원 포인트 적립
+		if (user != null) {
+			String storeName = cart.getStoreName();
+			int point = (int) (total * 0.01);
+			int result = adminDAO.pointUpdate(userId, storeName, point);
+			if (result == 1) {
+				UserInfoSessionUpdate.sessionUpdate(point + "", "point", user, session);
+			}
+
+		}
+		// 로그인 사용자가 포인트 사용했을때
+		if (info.getUsedPoint() != 0) {
+			String storeName = cart.getStoreName();
+			int usedPoint = -info.getUsedPoint();
+			int result = adminDAO.pointUpdate(userId, storeName, usedPoint);
+
+			if (result == 1) {
+				UserInfoSessionUpdate.sessionUpdate(usedPoint + "", "point", user, session);
+			}
+		}
+
+		
+		
 		return null;
 	}
-	
-	
-
 }
+
