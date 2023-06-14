@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/link.jsp"%>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f96baebca9f9acdf5a88da77f439f0be&libraries=services,clusterer,drawing"></script>
 
 <link rel="stylesheet" href="/css/modal.css">
 <link rel="stylesheet" href="/css/store/detail.css">

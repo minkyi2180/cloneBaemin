@@ -54,7 +54,7 @@ $(document).ready(function() {
 	
 	
 	// 가게 입장시 카트리스트 불러오기
-	/*(function(){
+	(function(){
 		$.ajax({
 			url: "/cartList",
 			type: "get"
@@ -69,7 +69,7 @@ $(document).ready(function() {
 		.fail(function(){
 			swal("장바구니 정보 에러");
 		})
-	})();*/
+	})();
 	
 	
 
