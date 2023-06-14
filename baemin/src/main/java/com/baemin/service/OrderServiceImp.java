@@ -15,6 +15,7 @@ import com.baemin.dto.Cart;
 import com.baemin.dto.CartList;
 import com.baemin.dto.OrderDetail;
 import com.baemin.dto.OrderInfo;
+import com.baemin.dto.OrderList;
 import com.baemin.login.LoginService;
 import com.baemin.util.UserInfoSessionUpdate;
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ public class OrderServiceImp implements OrderService {
 	
 	@Autowired
 	private AdminDAO adminDAO;
+	
 
 	@Transactional
 	@Override
@@ -104,6 +106,11 @@ public class OrderServiceImp implements OrderService {
 		
 		
 		return null;
+	}
+
+	@Override
+	public List<OrderList> orderList(long userId) {
+		return orderDAO.orderList(userId);
 	}
 }
 

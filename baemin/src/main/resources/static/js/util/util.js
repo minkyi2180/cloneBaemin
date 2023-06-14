@@ -94,3 +94,25 @@ function closeModal() {
 	$("#amount").val(1);
 };
 
+
+function imgPreview(e,target){
+	const previewBox = target.siblings("div");
+	const preview = previewBox.find(".preview");
+	const fileReader = new FileReader();
+ 
+	fileReader.readAsDataURL(e.target.files[0]);
+ 
+	fileReader.onload = function() {
+		preview.attr("src", fileReader.result);
+		previewBox.css("display", "block");
+	}
+}
+	
+	
+function imgClose() {
+	$(".preview").attr("src", "");
+	$(".img").val("");
+	$(".img_box div").css("display", "none");
+}
+
+

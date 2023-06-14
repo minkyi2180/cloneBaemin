@@ -1,9 +1,12 @@
 package com.baemin.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.baemin.dto.CartList;
 import com.baemin.dto.OrderInfo;
+import com.baemin.dto.OrderList;
 import com.baemin.login.LoginService;
 
 public interface OrderService {
@@ -12,5 +15,7 @@ public interface OrderService {
 
 	public String order(CartList cart, OrderInfo info, LoginService user, HttpSession session);
 
+	//주문목록
+	List<OrderList> orderList(long userId);
 	
 }

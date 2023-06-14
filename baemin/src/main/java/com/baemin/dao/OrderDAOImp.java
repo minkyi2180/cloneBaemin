@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.baemin.dto.Cart;
 import com.baemin.dto.OrderDetail;
 import com.baemin.dto.OrderInfo;
+import com.baemin.dto.OrderList;
 
 @Repository
 public class OrderDAOImp implements OrderDAO{
@@ -46,6 +47,11 @@ public class OrderDAOImp implements OrderDAO{
 		sql.insert("order.orderDetail", map);
 		
 		
+	}
+
+	@Override
+	public List<OrderList> orderList(long userId) {
+		return sql.selectList("order.orderList", userId);
 	}
 	
 	

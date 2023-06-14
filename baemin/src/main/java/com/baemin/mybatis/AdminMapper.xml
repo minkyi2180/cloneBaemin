@@ -15,5 +15,11 @@
 			,#{point }
 		)
 	</insert>
+	 <update id="pointUpdateUser">
+	    UPDATE DL_USER SET
+	        POINT = #{totalPoint }      
+	    WHERE
+	        ID = ${userId}    
+	</update>
 	
 </mapper>
