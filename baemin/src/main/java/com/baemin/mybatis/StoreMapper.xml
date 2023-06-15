@@ -8,8 +8,8 @@
 		SELECT * FROM BM_STORE
 	</select>	
 	
-		<select id="storeDetail" resultType="Store">
-		SELECT	RESULT.*
+	<select id="storeDetail" resultType="Store">
+SELECT	RESULT.*
         ,CASE WHEN TO_CHAR(SYSDATE,'HH24') BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME THEN 'true' ELSE 'false' END IS_OPEN
 FROM	(SELECT S.*,
                 C.*,
@@ -32,7 +32,8 @@ FROM	(SELECT S.*,
                 ) C
         WHERE 	ID = #{id }
         ) RESULT
-	</select>
+</select>
+
 	
 	<select id="foodList" resultType="Food">
 		SELECT
