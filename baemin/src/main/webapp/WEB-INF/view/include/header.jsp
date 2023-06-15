@@ -30,7 +30,7 @@ header .admin_page_btn a {
 			<a href="/"><img src="/img/baemin.jpg" alt="이미지"> </a>
 
 			<c:if test="${SPRING_SECURITY_CONTEXT != null }">
-				로그인중			
+				로그인중
 			</c:if>
 
 			<!-- 임시 -->
@@ -45,9 +45,9 @@ header .admin_page_btn a {
 			
 			<div class="menu_tab_box active">
 				<div class="menu_tab">
-					<span> </span>
-					<span> </span>
-					<span> </span>
+					<span> g</span>
+					<span> g</span>
+					<span> g</span>
 				</div>
 			</div>
 
