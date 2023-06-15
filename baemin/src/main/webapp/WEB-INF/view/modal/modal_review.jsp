@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fm" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <!-- 리뷰 쓰기 모달 -->
     <div id="modal_bg"></div>
 

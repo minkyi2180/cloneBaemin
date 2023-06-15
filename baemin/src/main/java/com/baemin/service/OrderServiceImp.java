@@ -112,5 +112,11 @@ public class OrderServiceImp implements OrderService {
 	public List<OrderList> orderList(long userId) {
 		return orderDAO.orderList(userId);
 	}
+
+	@Override
+	public OrderList orderListDetail(String orderNum) {
+		return orderDAO.orderListDetail(orderNum);
+
+	}
 }
 

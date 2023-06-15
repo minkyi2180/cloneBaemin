@@ -24,6 +24,9 @@ public interface OrderDAO {
 	void orderDetail(OrderDetail[] detail, long userId);
 
 	List<OrderList> orderList(long userId);
+	
+	//주문목록 상세보기
+	OrderList orderListDetail(String orderNum);
 
 
 }

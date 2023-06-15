@@ -16,8 +16,9 @@ $(document).ready(function() {
 			
 			$(".review_modify_modal textarea").val(reviewContent);
 			$(".review_modify_modal .preview").attr("src", reviewImg);
-			$(".review_modify_modal .img_box div").css("display", "block");
-			
+			if(reviewImg != "") {
+				$(".review_modify_modal .img_box div").css("display", "block");	
+			}
 		}
 
 		openModal(modal);

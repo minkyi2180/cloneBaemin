@@ -96,6 +96,7 @@
 			)
 		</if>
 	</insert>
+	
 	<insert id="orderDetail">
 		INSERT ALL
 		<foreach collection="detail" item="detail">
@@ -117,6 +118,7 @@
 		SELECT * FROM DUAL
 	</insert>
 	
+	<!-- 
 		<select id="orderList" resultType="OrderList">
 	SELECT * FROM (
     	SELECT	ROWNUM R
@@ -143,9 +145,9 @@
 			            r.score,
 			            r.review_img
 			FROM		bm_order_user o
-			LEFT JOIN   (SELECT  ORDER_NUM, 
+			LEFT JOIN   (SELECT  ORDER_NUM,  -->
 			<!-- 이 부분 주의할 것 !-->
-                         LISTAGG(FOOD_INFO, '/') WITHIN GROUP (ORDER BY ORDER_NUM) food_info
+          <!--                LISTAGG(FOOD_INFO, '/') WITHIN GROUP (ORDER BY ORDER_NUM) food_info
                         FROM     BM_ORDER_DETAIL_USER 
                         GROUP BY ORDER_NUM) d
 			ON		  	o.order_num = d.order_num
@@ -158,6 +160,73 @@
 	        ) O
 		) 
 		WHERE R BETWEEN #{firstList } AND #{lastList }
+	</select>
+	 -->
+	 
+	    <select id="orderList" resultType="OrderList">
+      select * from
+      (
+         select rownum r, O.*
+         from 
+         (
+            select count(*) over() list_count,
+               o.order_num, o.user_id, o.order_date, o.pay_method,
+               o.delivery_status, o.delivery_address1, o.delivery_address2, o.delivery_address3,
+               o.store_id, o.total_price, o.used_point, o.request,
+               d.food_info,
+               s.store_name, s.store_img, s.store_thumb, s.delivery_tip,
+               r.review_content, r.score, r.review_img
+            from bm_order_user o
+            left join
+            (
+               select order_num, 
+                  LISTAGG(food_info, '/') within group
+                  (
+                     order by order_num
+                  )food_info
+               from bm_order_detail_user
+               group by order_num
+            ) d
+            on o.order_num = d.order_num
+            left join bm_store s
+            on o.store_id = s.id
+            left join bm_review r
+            on o.order_num = r.order_num
+            where o.user_id = #{userId}
+            order by o.order_date desc
+         ) O
+      )	
+   </select>
+   
+	<select id="orderListDetail" resultType="OrderList">
+		SELECT	o.order_num,
+		    	o.user_id,
+		    	o.order_date,
+		    	o.pay_method,
+		    	o.delivery_status,
+		    	o.phone,
+		    	o.delivery_address1,
+		    	o.delivery_address2,
+		    	o.delivery_address3,
+		    	o.store_id,
+		    	o.total_price,
+		    	o.used_point,
+                o.request,
+                d.food_info,
+		    	s.store_name,
+			    s.delivery_tip
+	FROM		bm_order_user o
+	LEFT JOIN   (SELECT  ORDER_NUM, 
+                         LISTAGG(FOOD_INFO, '/')WITHIN GROUP (ORDER BY ORDER_NUM) food_info
+                FROM     BM_ORDER_DETAIL_USER 
+                GROUP BY ORDER_NUM) d
+	ON		  	o.order_num = d.order_num
+	LEFT JOIN	bm_store s
+	ON		 	o.store_id = s.id 
+    LEFT JOIN	bm_review r
+    ON			o.order_num = r.order_num
+	WHERE		o.order_num = #{orderNum }
+	ORDER BY	o.order_date desc
 	</select>
 	
 	

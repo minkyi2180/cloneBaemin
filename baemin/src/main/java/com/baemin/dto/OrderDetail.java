@@ -12,5 +12,6 @@ import lombok.ToString;
 public class OrderDetail {
 	private String orderNum;
 	private String foodInfoJSON;
+//	private String foodName;
 
 }

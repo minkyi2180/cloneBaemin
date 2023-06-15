@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/layout/footer.css">
 
     <!-- 제이쿼리 -->
+    
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
     <!-- 스윗얼럿 -->

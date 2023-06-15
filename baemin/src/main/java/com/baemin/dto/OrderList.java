@@ -24,6 +24,7 @@ public class OrderList {
 	private int usedPoint;
 	private String phone;
 	private String request;
+	
 	private String foodInfo;
 	
 	private String storeName;

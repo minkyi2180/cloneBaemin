@@ -106,13 +106,13 @@ function imgPreview(e,target){
 		preview.attr("src", fileReader.result);
 		previewBox.css("display", "block");
 	}
-}
+};
 	
 	
 function imgClose() {
 	$(".preview").attr("src", "");
 	$(".img").val("");
 	$(".img_box div").css("display", "none");
-}
+};
 
 

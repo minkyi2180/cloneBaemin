@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <%@ include file="/WEB-INF/view/include/link.jsp" %>
 	<link rel="stylesheet" href="/css/modal.css" >
 	<link rel="stylesheet" href="/css/layout/nav.css" >
@@ -32,6 +33,7 @@
         		
         		
 	        	<c:forEach begin="0" end="${fn:length(orderList)-1 }" var="i">
+                 
                     <li>
                     	<div class="img_box">
                     		<a href="/store/detail/${orderList[i].storeId }" >
@@ -65,6 +67,8 @@
 	                                <span><fm:formatNumber value="${orderList[i].totalPrice + orderList[i].deliveryTip - orderList[i].usedPoint }" pattern="###,###" /> 원</span>
 		                        </a>
                              </span>
+                             
+                             
                         </div>
                         
                         <div class="review_btn_box">
@@ -106,6 +110,7 @@
 	<%@ include file="/WEB-INF/view/modal/modal_review.jsp" %>
 	
 	
+	 
 	<script type="text/javascript" src="/js/order/orderList.js" ></script>
 	
 	
