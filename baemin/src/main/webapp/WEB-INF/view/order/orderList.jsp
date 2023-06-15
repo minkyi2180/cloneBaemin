@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/css/order/orderList.css" >
     
 <%@ include file="/WEB-INF/view/include/header.jsp" %>
-    
+   
     
 	<div class="wrap">
     
@@ -79,7 +79,7 @@
 	                        	<input type="hidden" class="store_id" value="${orderList[i].storeId }">
 	                        	
 	                        	<c:if test="${empty orderList[i].reviewContent }">
-		                        	<button class="review regi">리뷰쓰기</button>
+		                        	<button class="review regi" >리뷰쓰기</button>
 	                        	</c:if>
 	                        	<c:if test="${!empty orderList[i].reviewContent }">
 		                        	<button class="review modify">리뷰 수정하기</button>
@@ -110,8 +110,9 @@
 	<%@ include file="/WEB-INF/view/modal/modal_review.jsp" %>
 	
 	
-	 
-	<script type="text/javascript" src="/js/order/orderList.js" ></script>
+<script type="text/javascript" src="/js/order/orderList.js" ></script>
+
+	
 	
 	
 </body>

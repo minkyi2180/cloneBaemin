@@ -154,7 +154,7 @@
     <!-- 하단 메뉴 -->
  
     <!-- 푸터 -->
-    <%@ include file="/WEB-INF/view//include/footer.jsp" %>
+    <%@ include file="/WEB-INF/view/include/footer.jsp" %>
     <!-- 푸터 -->
  
 <script>

@@ -60,12 +60,12 @@ public class StoreController {
 	// 리뷰 작성
 	@PostMapping("/store/review")
 	public String review(Review review, MultipartFile file, @AuthenticationPrincipal LoginService user) throws IOException {
+	 
 	    if (file.isEmpty()) {
-	        String img = "";
+	        String img = "/img/none.gif";
 	        review.setReviewImg(img);
 	    } else {
-	        String img = uploadFile.fildUpload(file);
-	        review.setReviewImg(img);
+	        
 	    }
 	    long userId = user.getUser().getId();
 	    review.setUserId(userId);
@@ -74,6 +74,7 @@ public class StoreController {
 	 
 	    return "redirect:/orderList";
 	}
+
 	 
 	 
 	// 리뷰 수정
