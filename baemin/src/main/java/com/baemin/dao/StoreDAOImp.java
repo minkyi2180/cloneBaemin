@@ -73,6 +73,11 @@ public class StoreDAOImp implements StoreDAO {
 		map.put("userId", userId);
 		return sql.selectOne("store.storeDetail",map);
 	}
+
+	@Override
+	public List<Store> likesList(long userId) {
+		return sql.selectList("store.likesList", userId);
+	}
 	
 	
 	

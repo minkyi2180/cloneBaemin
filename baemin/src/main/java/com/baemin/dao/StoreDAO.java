@@ -25,4 +25,7 @@ public interface StoreDAO {
 	void deleteLikes(Map<String, Long> map);
 	
 	Store storeDetail(long storeId, long userId);
+	
+	//찜한 가게목록
+	List<Store> likesList(long userId);
 }

@@ -88,6 +88,11 @@ public class StoreServiceImp implements StoreService{
 		
 		return new StoreDetail(storeInfo, foodList, reviewList);
 	}
+
+	@Override
+	public List<Store> likesList(long userId) {
+		return storeDAO.likesList(userId);
+	}
 	
 
 }
