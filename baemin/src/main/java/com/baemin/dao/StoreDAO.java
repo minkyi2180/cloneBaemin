@@ -16,5 +16,13 @@ public interface StoreDAO {
 	
 	void reviewWrite(Review review);
 	List<Review> reviewList(long id);
+	
+	
 	void reviewModify(Review review);
+	
+	void addLikes(Map<String, Long> map);
+	
+	void deleteLikes(Map<String, Long> map);
+	
+	Store storeDetail(long storeId, long userId);
 }

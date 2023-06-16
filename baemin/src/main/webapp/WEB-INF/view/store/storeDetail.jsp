@@ -26,15 +26,24 @@
                   	
 				</span><br>
                
+               
                    
-           		<span><i class="fas fa-heart" ></i> 찜 </span>
-                   	
-                    
-                <span class="likes_count" data-count=0 >0</span>
+           	<c:choose>
+    <c:when test="${info.isLikes == 1 }">
+        <span><i class="fas fa-heart" ></i> 찜 </span>
+    </c:when>
+    
+    <c:otherwise>
+        <span><i class="far fa-heart" ></i> 찜 </span>
+    </c:otherwise>
+</c:choose>  	
+    
+<span class="likes_count" data-count=${info.likesCount } >${info.likesCount }</span>
+
                   
 			</div>
                	<div>
-               		<span class="store_review_count" data-review_count="0"> 리뷰 0</span>
+               		<span class="store_review_count" data-review_count="0"> 리뷰 ${info.reviewCount }</span>
                		<span>사장님 댓글 ${info.bossCommentCount}</span>
             	</div>
                 

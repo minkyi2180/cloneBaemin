@@ -1,6 +1,8 @@
 package com.baemin.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +19,7 @@ import com.baemin.dto.OrderDetail;
 import com.baemin.dto.OrderInfo;
 import com.baemin.dto.OrderList;
 import com.baemin.login.LoginService;
+import com.baemin.util.Page;
 import com.baemin.util.UserInfoSessionUpdate;
 import com.google.gson.Gson;
 
@@ -109,14 +112,27 @@ public class OrderServiceImp implements OrderService {
 	}
 
 	@Override
-	public List<OrderList> orderList(long userId) {
-		return orderDAO.orderList(userId);
-	}
-
-	@Override
 	public OrderList orderListDetail(String orderNum) {
 		return orderDAO.orderListDetail(orderNum);
 
 	}
+
+
+	@Override
+	public List<OrderList> orderList(long userId, Page p) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("firstList", p.getFirstList());
+		map.put("lastList", p.getLastList());
+		
+		System.out.println("첫번째 목록 = " + p.getFirstList() + " 마지막 목록 = " + p.getLastList());
+		System.out.println("첫번째 = " + p.getFirstPage() + " 마지막 = " + p.getLastPage() );
+		System.out.println("이전페이지 = " + p.getPrevPage());
+		System.out.println("다음페이지 = " + p.getNextPage());
+		return orderDAO.orderList(map);
+	}
+
+	
+	
 }
 

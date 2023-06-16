@@ -1,5 +1,6 @@
 package com.baemin.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,25 @@ public class StoreDAOImp implements StoreDAO {
 	public void reviewModify(Review review) {
 		sql.update("store.reviewModify", review);
 		
+	}
+
+	@Override
+	public void addLikes(Map<String, Long> map) {
+		sql.insert("store.addLikes",map);
+		
+	}
+
+	@Override
+	public void deleteLikes(Map<String, Long> map) {
+		sql.insert("store.deleteLikes",map);
+	}
+
+	@Override
+	public Store storeDetail(long storeId, long userId) {
+		Map<String, Long> map = new HashMap<>();
+		map.put("storeId", storeId);
+		map.put("userId", userId);
+		return sql.selectOne("store.storeDetail",map);
 	}
 	
 	

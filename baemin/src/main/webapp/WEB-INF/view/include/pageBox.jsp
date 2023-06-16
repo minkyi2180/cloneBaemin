@@ -22,6 +22,32 @@
 	.page_box li { width: 25px; height: 25px; line-height: 25px; font-size: 12px; }
 }	
 </style>
+
+<c:set var="uri" value="${requestScope['javax.servlet.forward.request_uri']}" />
+<c:set var="pathValiable" value="${'/' }${page.nowPage }" />
+<c:set var="path" value="${fn:replace(uri, pathValiable, '') }${'/' }" /> 
+ 
+ 
+<ul class="page_box">
+	<c:if test="${page.pageCount < page.firstPage }">
+        <li><a href="${path }${page.prevPage }">이전</a></li>
+    </c:if>
+    <c:forEach begin="${page.firstPage }" end="${page.firstPage + page.pageCount - 1 }" var="i">
+    	<c:if test="${i <= page.totalPage}">
+           <c:if test="${i != page.nowPage }">
+               <li><a href="${path }${i } ">${i }</a></li>
+           </c:if>
+           <c:if test="${i == page.nowPage }">
+               <li><a class="now_page" onclick="return false;" href="${path }${i }">${i }</a></li>
+           </c:if>
+         </c:if> 
+    </c:forEach>
+    <c:if test="${page.firstPage + page.pageCount <= page.totalPage }">
+        <li><a href="${path }${page.nextPage }">다음</a></li>
+    </c:if>
+</ul>
+
+<!-- 
 <c:set var="queryString" value="${requestScope['javax.servlet.forward.query_string']}" />
 <c:if test="${!empty queryString}"> 
 	<c:set var="queryString" value="${'?'}${queryString}" />
@@ -50,3 +76,5 @@
         <li><a href="${path }${page.nextPage }${queryString }">다음</a></li>
     </c:if>
 </ul>
+
+ -->

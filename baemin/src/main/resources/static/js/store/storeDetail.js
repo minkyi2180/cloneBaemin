@@ -124,13 +124,13 @@ $(document).ready(function() {
 		if(isAdmin) {
 			return;
 		}
-		/*
+		
 		const isOpen = $("#is_open").data("is_open");
 		if(!isOpen) {
 			swal("지금은 준비중이에요");
 			return;
 		}
-		*/
+		
 		const foodId = $(this).find(".food_id").val();
 		$.ajax({
 			url: "/foodOption",

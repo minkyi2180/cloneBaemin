@@ -14,5 +14,10 @@ public interface StoreService {
 	
 	void reviewWrite(Review review);
 	void reviewModify(Review review);
-
+	
+	List<Store> storeList(int category, int address, String sort, int page);
+	
+	//찜
+	void likes(long storeId, String likes, long userId);
+	StoreDetail storeDetail(long id, long userId);
 }

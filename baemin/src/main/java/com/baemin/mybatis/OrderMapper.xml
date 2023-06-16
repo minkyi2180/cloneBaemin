@@ -196,6 +196,7 @@
             order by o.order_date desc
          ) O
       )	
+      where r between #{firstList} and #{lastList}
    </select>
    
 	<select id="orderListDetail" resultType="OrderList">

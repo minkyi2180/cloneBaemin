@@ -3,11 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="store">
- 
+	<!-- 
 	<select id="storeList" resultType="Store">
 		SELECT * FROM BM_STORE
-	</select>	
-	
+	 
+	</select>
+ -->
+	<!-- 
 	<select id="storeDetail" resultType="Store">
 SELECT	RESULT.*
         ,CASE WHEN TO_CHAR(SYSDATE,'HH24') BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME THEN 'true' ELSE 'false' END IS_OPEN
@@ -33,7 +35,42 @@ FROM	(SELECT S.*,
         WHERE 	ID = #{id }
         ) RESULT
 </select>
-
+ -->
+ 
+ <select id="storeDetail" resultType="Store">
+	SELECT	RESULT.*
+			,L.IS_LIKES
+			,CASE WHEN TO_CHAR(SYSDATE,'HH24') BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME THEN 'true' ELSE 'false' END IS_OPEN
+	FROM	(SELECT S.*,
+	    			C.*,
+	    			CASE WHEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) != 0 THEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) ELSE 24 END BS_TIME
+	    	FROM 	BM_STORE S
+		        	,(SELECT * FROM  
+			            	(SELECT	ROUND(AVG(SCORE),1) SCORE
+			                ,COUNT(REVIEW_CONTENT) REVIEW_COUNT
+			                ,COUNT(BOSS_COMMENT) BOSS_COMMENT_COUNT
+			                ,COUNT(CASE WHEN SCORE=1 THEN 1 END) SCORE1
+			                ,COUNT(CASE WHEN SCORE=2 THEN 1 END) SCORE2
+			                ,COUNT(CASE WHEN SCORE=3 THEN 1 END) SCORE3
+			                ,COUNT(CASE WHEN SCORE=4 THEN 1 END) SCORE4
+			                ,COUNT(CASE WHEN SCORE=5 THEN 1 END) SCORE5
+	            	FROM 	BM_REVIEW WHERE STORE_ID = #{storeId } ) 
+	            	,(SELECT COUNT(*) LIKES_COUNT FROM BM_LIKES WHERE STORE_ID = #{storeId } )
+		            ,(SELECT SUM(ORDER_COUNT) ORDER_COUNT FROM (
+	                    SELECT COUNT(*) ORDER_COUNT FROM BM_ORDER_USER WHERE STORE_ID = #{storeId }
+	                        UNION ALL
+	                    SELECT COUNT(*) ORDER_COUNT FROM BM_ORDER_NON_USER WHERE STORE_ID = #{storeId } ))
+	        		) C
+	        WHERE 	ID = #{storeId }
+	    	) RESULT
+	LEFT JOIN   (SELECT STORE_ID, 1 IS_LIKES FROM BM_LIKES WHERE EXISTS(SELECT 1 FROM BM_LIKES WHERE USER_ID = #{userId } AND  STORE_ID = #{storeId } )) L
+    ON          RESULT.ID = L.STORE_ID    
+    	
+	</select>
+	<!-- left join~ l.store_id까지 내용이 가게에 찜한 사용자수를 추가하고 아래의 사용자가 찜한 가게가 있을 경우 is_like로 1을 출력하는 쿼리 -->
+	
+	
+ 
 	
 	<select id="foodList" resultType="Food">
 		SELECT
@@ -115,7 +152,59 @@ FROM	(SELECT S.*,
     WHERE
         ORDER_NUM = ${orderNum }    
 </update>
-	
+
+<select id="storeList" resultType="Store">
+		WITH R_COUNT AS (
+	    SELECT STORE_ID
+                ,ROUND(AVG(SCORE), 1) SCORE
+                ,COUNT(REVIEW_CONTENT) REVIEW_COUNT
+                ,COUNT(BOSS_COMMENT) BOSS_COMMENT_COUNT 
+        FROM    BM_REVIEW 
+        GROUP BY STORE_ID
+	),
+	STORE AS (
+	    SELECT  S.*,
+	            T.*
+	    FROM        BM_STORE S
+	    LEFT JOIN   R_COUNT T
+	    ON          S.ID = T.STORE_ID     
+	    WHERE       CATEGORY = #{category} 
+	    AND         STORE_ADDRESS1 LIKE '${address}%')
+        
+	SELECT * FROM 
+	    (SELECT ROWNUM RN, 
+	            RESULT.* 
+	    FROM   
+	            (SELECT C.* 
+	                    ,'true' IS_OPEN 
+	            FROM    STORE C  
+	            WHERE   TO_CHAR(SYSTIMESTAMP, 'HH24') BETWEEN OPENING_TIME AND CLOSING_TIME
+	            
+	            UNION ALL
+		         
+	            SELECT C.*
+	                   ,'false' IS_OPEN 
+	            FROM   STORE C  
+	            WHERE  TO_CHAR(SYSTIMESTAMP, 'HH24') NOT BETWEEN OPENING_TIME AND CLOSING_TIME
+		        ) RESULT
+		 ) 
+		 WHERE RN BETWEEN 1 AND 10
+		 </select>
+	<insert id="addLikes">
+    INSERT INTO BM_LIKES (
+        USER_ID
+        ,STORE_ID
+    ) VALUES (
+        #{userId }
+        ,#{storeId }
+    )
+</insert>
+ 
+<delete id="deleteLikes">
+    DELETE BM_LIKES  WHERE 
+    USER_ID = #{userId } AND
+    STORE_ID = #{storeId }			
+</delete>
 	
 	
 </mapper>

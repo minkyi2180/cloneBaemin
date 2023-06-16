@@ -38,6 +38,9 @@ public class Store {
 	
 	//오픈중?
 	private String isOpen;
+	
+	//찜-1 //찜x -0
+	private int isLikes; 
 
 	
 

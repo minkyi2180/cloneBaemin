@@ -1,9 +1,15 @@
 package com.baemin.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +47,12 @@ public class StoreController {
 	}
 	
 	@GetMapping("/store/detail/{id}")
-	public String storeDetail(@PathVariable long id, Model model) {
+	public String storeDetail(@PathVariable long id, Model model, @AuthenticationPrincipal LoginService user){
+		long userId = 0;
+		if(user != null) {
+			userId = user.getUser().getId();
+		}
+		
 		StoreDetail storeDetail = storeService.storeDetail(id);
 		model.addAttribute("store", storeDetail);
 		return "store/detail";
@@ -60,12 +71,12 @@ public class StoreController {
 	// 리뷰 작성
 	@PostMapping("/store/review")
 	public String review(Review review, MultipartFile file, @AuthenticationPrincipal LoginService user) throws IOException {
-	 
 	    if (file.isEmpty()) {
-	        String img = "/img/none.gif";
+	        String img = "";
 	        review.setReviewImg(img);
 	    } else {
-	        
+	        String img = uploadFile.fildUpload(file);
+	        review.setReviewImg(img);
 	    }
 	    long userId = user.getUser().getId();
 	    review.setUserId(userId);
@@ -74,7 +85,6 @@ public class StoreController {
 	 
 	    return "redirect:/orderList";
 	}
-
 	 
 	 
 	// 리뷰 수정
@@ -92,5 +102,29 @@ public class StoreController {
 	    return "redirect:/orderList";
 	}
 
+
+	@ResponseBody
+	@GetMapping("/store/storeList")
+	public ResponseEntity<List<Store>> sortStore(int category, int address1, String sort, int page, Model model){
+		List<Store> storeList = storeService.storeList(category, address1/ 100, sort, page);
+		return new ResponseEntity<>(storeList, HttpStatus.OK);
+	}
+	
+	
+	//찜하기
+	@ResponseBody
+	@PostMapping("/store/likes")
+	public long likes(long id, String likes, @AuthenticationPrincipal LoginService user, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
+		System.out.println("찜하기 id = " +id+" "+likes );
+		long userId=0;
+		if(user == null) {
+			
+		}else {
+			System.out.println("찜하기 회원");
+			userId = user.getUser().getId();
+			storeService.likes(id,likes,userId);
+		}
+		return userId;
+	}
 
 }

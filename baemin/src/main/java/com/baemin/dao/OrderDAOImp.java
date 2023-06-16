@@ -50,8 +50,8 @@ public class OrderDAOImp implements OrderDAO{
 	}
 
 	@Override
-	public List<OrderList> orderList(long userId) {
-		return sql.selectList("order.orderList", userId);
+	public List<OrderList> orderList(Map<String, Object> map) {
+		return sql.selectList("order.orderList", map);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import com.baemin.login.LoginService;
 import com.baemin.service.OrderService;
 import com.baemin.util.CreateOrderNum;
 import com.baemin.util.FoodInfoFromJson;
+import com.baemin.util.Page;
 
 
 @Controller
@@ -68,33 +69,36 @@ public class OrderController {
 	
 	
 	//주문 목록
-	@GetMapping("/orderList" )//"/orderList/{page}"})
-	public String orderList(@AuthenticationPrincipal LoginService user, Model model) {
-		if(user == null) {
-			System.out.println("비로그인");
-		}else {
-			System.out.println("로그인");
-			long userId = user.getUser().getId();
-			
-//			Page p = new Page(page);
-			List<OrderList> orderList = orderService.orderList(userId);
-			
-			System.out.println(orderList);
-			if(orderList.size() == 0) {
-				return "order/orderList";
-			}
-			
-			List<List<Cart>> cartList = new ArrayList<>();
-			
-			for(int i=0;i<orderList.size();i++) {
-				cartList.add(FoodInfoFromJson.foodInfoFromJson(orderList.get(i).getFoodInfo()));
-			}
-			model.addAttribute("user", user.getUser());
-			model.addAttribute("cartList", cartList);
-			model.addAttribute("orderList", orderList);
-		}
-		return "order/orderList";
+	@GetMapping({"/orderList", "/orderList/{page}"})
+	public String orderList(@AuthenticationPrincipal LoginService user, Model model, @PathVariable(required = false) Integer page) {
+	    if (user == null) {
+	        System.out.println("비로그인");
+	    } else {
+	        System.out.println("로그인");
+	        long userId = user.getUser().getId();
+	 
+	        Page p = new Page(page);
+	        List<OrderList> orderList = orderService.orderList(userId, p);
+	 
+	        if (orderList.size() == 0) {
+	            return "order/orderList";
+	        }
+	 
+	        List<List<Cart>> cartList = new ArrayList<>();
+	 
+	        for (int i=0;i<orderList.size();i++) {
+	            cartList.add(FoodInfoFromJson.foodInfoFromJson(orderList.get(i).getFoodInfo()));
+	        }
+	        p.totalPage(orderList.get(0).getListCount());
+	        model.addAttribute("page", p);
+	        model.addAttribute("user", user.getUser());
+	        model.addAttribute("cartList", cartList);
+	        model.addAttribute("orderList", orderList);
+	    }
+	 
+	    return "order/orderList";
 	}
+
 	
 	
 	@GetMapping("/orderListDetail/{orderNum}")
