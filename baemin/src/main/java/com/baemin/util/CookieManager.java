@@ -3,6 +3,7 @@ package com.baemin.util;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -58,5 +59,34 @@ public class CookieManager {
 		cookie.setMaxAge(60*60*24*30);
 		attr.getResponse().addCookie(cookie);
 	}
+	
+	public LinkedHashSet<String> saveKeyword(String keyword) throws Exception {
+	    final String KEYWORD = "KEYWORD";
+	    final int LIST_SIZE = 5;
+	    
+	    String keywordList = findCookie(KEYWORD);
+	    
+	    LinkedHashSet<String> set = new LinkedHashSet<>();
+	    
+	    if(keywordList == null) {
+	        set.add(keyword);
+	        addCookie(KEYWORD, set.toString());
+	        return set;
+	    } 
+	    
+	    set.add(keyword);
+	    
+	    StringTokenizer st = new StringTokenizer(keywordList, ", ");
+	    
+	    while(st.hasMoreTokens() && set.size() < LIST_SIZE) {
+	        String key = st.nextToken();
+	        set.add(key);
+	    }
+	    addCookie(KEYWORD, set.toString());
+	    
+	    return set;
+	}
+
+	
 
 }

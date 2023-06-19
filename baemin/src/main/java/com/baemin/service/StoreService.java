@@ -6,6 +6,7 @@ import com.baemin.dto.FoodOption;
 import com.baemin.dto.Review;
 import com.baemin.dto.Store;
 import com.baemin.dto.StoreDetail;
+import com.baemin.util.Page;
 
 public interface StoreService {
 	List<Store> storeList(int category, int address);
@@ -25,4 +26,6 @@ public interface StoreService {
 	List<Store> likesList(long userId);
 	
 	List<Store> likesListNonUser(String likes);
+	
+	List<Store> storeSearch(String keyword, int address, Page p);
 }

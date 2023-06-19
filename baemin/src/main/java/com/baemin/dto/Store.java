@@ -41,7 +41,8 @@ public class Store {
 	
 	//찜-1 //찜x -0
 	private int isLikes; 
-
+	
+	private int listCount;	// 매장 수
 	
 
 }

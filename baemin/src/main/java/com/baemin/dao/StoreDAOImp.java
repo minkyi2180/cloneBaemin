@@ -83,6 +83,11 @@ public class StoreDAOImp implements StoreDAO {
 	public List<Store> likesListNonUser(String likes) {
 		return sql.selectList("store.likesListNonUser", likes);
 	}
+
+	@Override
+	public List<Store> storeSearch(Map<String, Object> map) {
+		return sql.selectList("store.storeSearch", map);
+	}
 	
 	
 	

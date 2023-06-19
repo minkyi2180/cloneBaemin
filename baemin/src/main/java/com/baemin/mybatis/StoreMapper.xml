@@ -280,6 +280,51 @@
        AND     	OPENING_TIME + BS_TIME )
        ) 
    </select>
+	<select id="storeSearch" resultType="Store">
+    WITH R_COUNT AS (
+       SELECT  R.STORE_ID 
+               ,ROUND(R.SCORE, 1) SCORE
+               ,R.REVIEW_COUNT
+               ,R.BOSS_COMMENT_COUNT 
+       FROM 
+               (SELECT STORE_ID
+                       ,AVG(SCORE) SCORE
+                       ,COUNT(REVIEW_CONTENT) REVIEW_COUNT
+                       ,COUNT(BOSS_COMMENT) BOSS_COMMENT_COUNT 
+               FROM    BM_REVIEW GROUP BY STORE_ID ) R  
+   ),
+   STORE AS (
+       SELECT  	S.*
+                   ,T.*
+                   ,CASE WHEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) != 0 THEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) ELSE 24 END BS_TIME
+       FROM		BM_STORE S
+       LEFT JOIN 	R_COUNT T
+       ON	 		S.ID = T.STORE_ID
+       WHERE       STORE_ADDRESS1 LIKE '${address}%'
+       AND         STORE_NAME LIKE '%${keyword}%'
+   )
+   
+   SELECT * FROM 
+       (SELECT ROWNUM RN,
+               COUNT(*) OVER() list_count, 
+               RESULT.* 
+       FROM   
+               (SELECT C.* 
+                       ,'true' IS_OPEN 
+               FROM    STORE C  
+               WHERE   TO_CHAR(SYSTIMESTAMP, 'HH24') BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME
+               
+               UNION ALL
+                
+               SELECT C.*
+                      ,'false' IS_OPEN 
+               FROM   STORE C  
+               WHERE  TO_CHAR(SYSTIMESTAMP, 'HH24') NOT BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME 
+               ) RESULT
+        ) 
+   WHERE RN BETWEEN #{firstList } AND ${lastList }	 
+       
+   </select>
 	
 
 
