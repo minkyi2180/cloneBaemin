@@ -28,4 +28,6 @@ public interface StoreDAO {
 	
 	//찜한 가게목록
 	List<Store> likesList(long userId);
+	
+	List<Store> likesListNonUser(String likes);
 }

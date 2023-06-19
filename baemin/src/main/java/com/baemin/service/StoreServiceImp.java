@@ -93,6 +93,12 @@ public class StoreServiceImp implements StoreService{
 	public List<Store> likesList(long userId) {
 		return storeDAO.likesList(userId);
 	}
-	
+
+	@Override
+	public List<Store> likesListNonUser(String likes) {
+		return storeDAO.likesListNonUser(likes);
+	}
+
+
 
 }

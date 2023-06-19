@@ -29,7 +29,7 @@
                
                    
            	<c:choose>
-    <c:when test="${info.isLikes == 1 }">
+    <c:when test="${info.isLikes == 1 || isLikes }">
         <span><i class="fas fa-heart" ></i> 찜 </span>
     </c:when>
     

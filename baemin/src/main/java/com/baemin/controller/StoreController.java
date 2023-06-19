@@ -3,6 +3,7 @@ package com.baemin.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import com.baemin.dto.Store;
 import com.baemin.dto.StoreDetail;
 import com.baemin.login.LoginService;
 import com.baemin.service.StoreService;
+import com.baemin.util.CookieManager;
 import com.baemin.util.UploadFile;
 
 
@@ -48,10 +50,20 @@ public class StoreController {
 	}
 	
 	@GetMapping("/store/detail/{id}")
-	public String storeDetail(@PathVariable long id, Model model, @AuthenticationPrincipal LoginService user){
+	public String storeDetail(@PathVariable long id, Model model, @AuthenticationPrincipal LoginService user) throws Exception{
 		long userId = 0;
 		if(user != null) {
 			userId = user.getUser().getId();
+		}else {
+			CookieManager cm = new CookieManager();
+			String likesList = cm.findCookie("LIKES_LIST");
+			if(likesList == null) {
+				model.addAttribute("isLikes",false);
+			}else {
+				String[] arr= likesList.split(", ");
+				boolean isLikes = Arrays.asList(arr).contains(id+"");
+				model.addAttribute("isLikes", isLikes);
+			}
 		}
 		
 		StoreDetail storeDetail = storeService.storeDetail(id);
@@ -130,24 +142,25 @@ public class StoreController {
 	
 	// 찜한 가게 목록
 	@GetMapping("/likes/store")
-	public String likes(Model model, @AuthenticationPrincipal LoginService user) {
+	public String likes(Model model, @AuthenticationPrincipal LoginService user) throws Exception {
 	    long userId = 0;
 	    List<Store> likesList = new ArrayList<>();
 	    if (user == null) {
+	        CookieManager cm = new CookieManager();
+	        String likes = cm.findCookie("LIKES_LIST");
+	        
+	        if(likes != null && !"".equals(likes)) {
+	            likesList = storeService.likesListNonUser(likes);
+	        }
 	        
 	    } else {
 	        userId = user.getUser().getId();
 	        likesList = storeService.likesList(userId);
 	    }
-	    System.out.println("찜한 가게 : " );
-	    for(int i=0;i<likesList.size();i++) {
-	        System.out.println(likesList.get(i));
-	    }
-	    
 	    model.addAttribute("likesList", likesList);
-	 
 	    return "/store/likes";
 	}
+
 
  
 }

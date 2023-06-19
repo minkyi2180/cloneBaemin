@@ -23,4 +23,6 @@ public interface StoreService {
 	
 	//찜한 가게들
 	List<Store> likesList(long userId);
+	
+	List<Store> likesListNonUser(String likes);
 }
