@@ -20,7 +20,7 @@
 				<div>	
 					<input type="text" class="search" name="keyword" maxlength="33" value="${keyword }" placeholder="어떤 가게를 찾으시나요?" autofocus >
 					<div class="info">현재 주소지를 기준으로 검색됩니다.</div>
-					<input type="hidden" value="${BMaddress.address1 }" name="address1" id="deleveryAddress1">
+					<input type="hidden" value="${BMaddress.address1 }" name="address1" id="deliveryAddress1">
 					<%@ include file="/WEB-INF/view/include/modifyAddress.jsp" %> 
 				</div>
 				<div>

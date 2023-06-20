@@ -16,10 +16,53 @@
 		)
 	</insert>
 	 <update id="pointUpdateUser">
-	    UPDATE DL_USER SET
+	    UPDATE BM_USER SET
 	        POINT = #{totalPoint }      
 	    WHERE
 	        ID = ${userId}    
 	</update>
+	
+	<update id="storeInfoUpdate">
+	UPDATE BM_STORE SET
+		CATEGORY = #{category }
+		,STORE_NAME = #{storeName }
+		,STORE_ADDRESS1 = #{storeAddress1 }
+		,STORE_ADDRESS2 = #{storeAddress2 }
+		,STORE_ADDRESS3 = #{storeAddress3 }
+		,STORE_PHONE = #{storePhone }
+		,STORE_IMG = #{storeImg }
+		,STORE_THUMB = #{storeThumb }
+		,OPENING_TIME = #{openingTime }
+		,CLOSING_TIME = #{closingTime }
+		,MIN_DELIVERY = #{minDelivery }
+		,DELIVERY_TIME = #{deliveryTime }
+		,DELIVERY_TIP = #{deliveryTip }
+		,STORE_DES = #{storeDes }
+	WHERE
+		ID = #{id }  
+</update>
+<insert id="addMenu">
+	<selectKey keyProperty="id" resultType="long" order="BEFORE" >
+    SELECT FOOD_ID_SEQ.NEXTVAL FROM DUAL
+   </selectKey>
+   INSERT INTO BM_FOOD (
+		   ID
+		   ,STORE_ID
+		   ,FOOD_NAME
+		   ,FOOD_PRICE
+		   ,FOOD_DEC
+		   ,FOOD_IMG
+		   ,FOOD_THUMB
+	   ) VALUES (
+		   #{id }
+		   ,#{storeId }
+		   ,#{foodName }
+		   ,#{foodPrice }
+		   ,#{foodDec }
+		   ,#{foodImg }
+		   ,#{foodThumb }
+	   )
+</insert>
+
 	
 </mapper>

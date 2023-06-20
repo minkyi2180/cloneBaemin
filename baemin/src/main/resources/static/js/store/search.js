@@ -84,7 +84,7 @@ function check() {
         return false;
     }
     
-    if($("#deleveryAddress1").val() == "" ) {
+    if($("#deliveryAddress1").val() == "" ) {
         modifyAddress();
         swal({
             title: "주소를 입력해주세요",

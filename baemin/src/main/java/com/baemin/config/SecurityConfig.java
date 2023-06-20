@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.baemin.login.LoginDetailService;
 import com.baemin.login.LoginFail;
 import com.baemin.login.LoginSuccess;
+import com.baemin.login.OauthUserService;
 
 @EnableWebSecurity
 @Configuration
@@ -25,6 +26,9 @@ public class SecurityConfig<loginFail, loginSuccess> extends WebSecurityConfigur
 	//자동로그인
 	@Autowired
 	private LoginDetailService loginDetailService;
+	
+	@Autowired
+	private OauthUserService oauthUserService;
 	
 	
 	
@@ -57,6 +61,11 @@ public class SecurityConfig<loginFail, loginSuccess> extends WebSecurityConfigur
 	    	.rememberMeParameter("remember-me")
 	    	.tokenValiditySeconds(60 * 60 * 24 *7)
 	    	.userDetailsService(loginDetailService)
+	    .and()
+	    	.oauth2Login()
+	    	.loginPage("/")
+	    	.userInfoEndpoint()
+	    	.userService(oauthUserService)
 	    	;
 	    //key("rememberKey") 쿠키값을 암호화할때 사용하는 키
 	    //rememberMeParameter 로그인페이지 체크박스 name과 일치해야함

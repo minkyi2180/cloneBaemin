@@ -9,6 +9,7 @@
 <c:if test="${!empty loginFailMsg }">
 	<script type="text/javascript">
 		const msg = "${loginFailMsg}";
+		console.log(msg);
 		swal(msg);
 	</script>
 </c:if>
