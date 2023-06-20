@@ -24,6 +24,8 @@ public class OauthUserService extends DefaultOAuth2UserService {
 	private BCryptPasswordEncoder encodePwd;
 	@Autowired
 	private UserDAO userDAO;
+	@Autowired
+	private OAuthUserInfo oauthUserInfo;
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -34,19 +36,8 @@ public class OauthUserService extends DefaultOAuth2UserService {
 		User user = sql.selectOne("user.login", username);
 		
 		if(user == null) {
-			// 회원가입
-			user = new User("아이디", "비번", "이메일", "닉네임", "전화번호");
-			UUID uid = UUID.randomUUID();
-			String password = encodePwd.encode(uid.toString());
-			String email = oauth2User.getAttribute("email");
-			String phone = oauth2User.getAttribute("phone") == null ? "" : oauth2User.getAttribute("phone");
-			
-			Join join = new Join();
-			join.setUsername(username);
-			join.setPassword(password);
-			join.setEmail(email);
-			join.setNickname(username);
-			join.setPhone(phone);
+			//첫 로그인시 유저정보 생성
+			Join join = oauthUserInfo.createUser(provider, username, oauth2User);
 			
 			userDAO.join(join);
 			

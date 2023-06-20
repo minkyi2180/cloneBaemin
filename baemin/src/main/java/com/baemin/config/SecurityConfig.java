@@ -64,6 +64,7 @@ public class SecurityConfig<loginFail, loginSuccess> extends WebSecurityConfigur
 	    .and()
 	    	.oauth2Login()
 	    	.loginPage("/")
+	    	.successHandler(loginSuccess)
 	    	.userInfoEndpoint()
 	    	.userService(oauthUserService)
 	    	;

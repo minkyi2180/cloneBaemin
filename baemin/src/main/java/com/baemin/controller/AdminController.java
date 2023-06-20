@@ -43,7 +43,7 @@ public class AdminController {
 		model.addAttribute("store", storeDetail);
 		model.addAttribute("adminPage", true);
 		
-		return "admin/detail";
+		return "/admin/detail";
 	}
 	
 	@IsMyStore
