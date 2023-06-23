@@ -86,5 +86,10 @@ public class UserController {
 		System.out.println(count);
 		return count;
 	}
+	
+	@GetMapping("/user/myInfo")
+	public String myInfo() {
+		return "user/myInfo";
+	}
 
 }

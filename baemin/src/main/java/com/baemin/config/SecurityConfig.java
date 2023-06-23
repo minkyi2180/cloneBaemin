@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import com.baemin.login.LoginDetailService;
 import com.baemin.login.LoginFail;
@@ -40,7 +42,7 @@ public class SecurityConfig<loginFail, loginSuccess> extends WebSecurityConfigur
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	    http.csrf().disable();
-	 
+	    http.cors().and();
 	    http.authorizeRequests()
 	        .antMatchers("/admin/**").hasRole("ADMIN")
 	        .antMatchers("/user/**").hasAnyRole("ADMIN, USER")
@@ -73,6 +75,11 @@ public class SecurityConfig<loginFail, loginSuccess> extends WebSecurityConfigur
 	    //rememberMeCookieName 저장할 쿠키이름 기본값 remember-me	
 	    //tokenValiditySecond 쿠키 유지 시간  
 	 
+	}
+
+	private AccessDeniedHandler accessDeniedHandler() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 
